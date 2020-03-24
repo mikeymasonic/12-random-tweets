@@ -33,4 +33,28 @@ describe('routes', () => {
         });
       });
   });
+
+  it('gets all tweets', () => {
+    const tweets = [
+      { handle: 'Mikey', text: 'What this do?' },
+      { handle: 'Rico', text: 'IDK, I\'m just a bird' }
+    ];
+
+    return Tweet.create(tweets)
+      .then(() => {
+        return request(app)
+          .get('/api/v1/tweets');
+      })
+      .then(res => {
+        expect(res.body).toHaveLength(2);
+
+        tweets.forEach(tweet => {
+          expect(res.body).toContainEqual({
+            _id: expect.any(String),
+            ...tweet,
+            __v: 0
+          });
+        });
+      });
+  });
 });
