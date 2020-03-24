@@ -76,4 +76,23 @@ describe('routes', () => {
         });
       });
   });
+
+  it('deletes a tweet', () => {
+    return Tweet.create({
+      handle: 'Mikey',
+      text: 'What this do?'
+    })
+      .then(tweet => {
+        return request(app)
+          .delete(`/api/v1/tweets/${tweet.id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          handle: 'Mikey',
+          text: 'What this do?',
+          __v: 0
+        });
+      });
+  });
 });
